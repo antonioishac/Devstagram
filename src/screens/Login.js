@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, ImageBackground, Text, TextInput, TouchableHighlight, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { checkLogin } from '../actions/AuthActions';
+import { checkLogin, signInUser, changeEmail, changeSenha } from '../actions/AuthActions';
 
 export class Login extends Component {
     static navigationOptions = {
@@ -14,10 +14,15 @@ export class Login extends Component {
         this.state = {};
 
         this.signUpAction = this.signUpAction.bind(this);
+        this.loginAction = this.loginAction.bind(this);
     }
 
-    signUpAction(){
+    signUpAction() {
         this.props.navigation.navigate('SignUp');
+    }
+
+    loginAction() {        
+        this.props.signInUser(this.props.email, this.props.senha);
     }
 
     render() {
@@ -25,10 +30,10 @@ export class Login extends Component {
             <ImageBackground source={require('../assets/bg.jpg')} style={styles.container}>
                 <Text style={styles.logo}>Devstagram</Text>
 
-                <TextInput style={styles.input} placeholder="Digite seu e-mail" placeholderTextColor="#FFFFFF" />
-                <TextInput style={styles.input} placeholder="Digite sua senha" placeholderTextColor="#FFFFFF" secureTextEntry={true} />
+                <TextInput value={this.props.email} onChangeText={this.props.changeEmail} style={styles.input} placeholder="Digite seu e-mail" placeholderTextColor="#FFFFFF" />
+                <TextInput value={this.props.senha} onChangeText={this.props.changeSenha} style={styles.input} placeholder="Digite sua senha" placeholderTextColor="#FFFFFF" secureTextEntry={true} />
 
-                <TouchableHighlight style={styles.actionButton} onPress={ ()=>{} } underlayColor="#307EAF">
+                <TouchableHighlight style={styles.actionButton} onPress={this.loginAction} underlayColor="#307EAF">
                     <Text style={styles.actionButtonText}>Login</Text>
                 </TouchableHighlight>
 
@@ -59,7 +64,8 @@ const styles = StyleSheet.create({
         borderRadius:5,
         color:'#FFFFFF',
         fontSize:17,
-        marginBottom:10
+        marginBottom:10,
+        paddingLeft: 10
     },
     actionButton: {
         width:"90%",
@@ -92,9 +98,11 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        status:state.auth.status
+        status:state.auth.status,
+        email:state.auth.email,
+        senha:state.auth.senha
     };
 };
 
-const LoginConnect = connect(mapStateToProps, {checkLogin})(Login);
+const LoginConnect = connect(mapStateToProps, {checkLogin, signInUser, changeEmail, changeSenha})(Login);
 export default LoginConnect;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, ImageBackground, Text, TextInput, TouchableHighlight, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { checkLogin } from '../actions/AuthActions';
+import { checkLogin, registerNewUser, changeEmail, changeNome, changeSenha } from '../actions/AuthActions';
 
 export class SignUp extends Component {
     static navigationOptions = {
@@ -14,10 +14,19 @@ export class SignUp extends Component {
         this.state = {};
 
         this.signInAction = this.signInAction.bind(this);
+        this.registerAction = this.registerAction.bind(this);
     }
 
     signInAction(){
         this.props.navigation.goBack();
+    }
+
+    registerAction() {
+        this.props.registerNewUser(
+            this.props.nome,
+            this.props.email,
+            this.props.senha
+        );
     }
 
     render() {
@@ -25,11 +34,11 @@ export class SignUp extends Component {
             <ImageBackground source={require('../assets/bg.jpg')} style={styles.container}>
                 <Text style={styles.logo}>Cadastro</Text>
 
-                <TextInput style={styles.input} placeholder="Digite seu nome" placeholderTextColor="#FFFFFF" />
-                <TextInput style={styles.input} placeholder="Digite seu e-mail" placeholderTextColor="#FFFFFF" />
-                <TextInput style={styles.input} placeholder="Digite sua senha" placeholderTextColor="#FFFFFF" secureTextEntry={true} />
+                <TextInput value={this.props.nome} onChangeText={this.props.changeNome} style={styles.input} placeholder="Digite seu nome" placeholderTextColor="#FFFFFF" />
+                <TextInput value={this.props.email} onChangeText={this.props.changeEmail} style={styles.input} placeholder="Digite seu e-mail" placeholderTextColor="#FFFFFF" />
+                <TextInput value={this.props.senha} onChangeText={this.props.changeSenha} style={styles.input} placeholder="Digite sua senha" placeholderTextColor="#FFFFFF" secureTextEntry={true} />
 
-                <TouchableHighlight style={styles.actionButton} onPress={ ()=>{} } underlayColor="#307EAF">
+                <TouchableHighlight style={styles.actionButton} onPress={this.registerAction} underlayColor="#307EAF">
                     <Text style={styles.actionButtonText}>Cadastrar</Text>
                 </TouchableHighlight>
 
@@ -60,7 +69,8 @@ const styles = StyleSheet.create({
         borderRadius:5,
         color:'#FFFFFF',
         fontSize:17,
-        marginBottom:10
+        marginBottom:10,
+        paddingLeft: 10
     },
     actionButton: {
         width:"90%",
@@ -93,9 +103,12 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        status:state.auth.status
+        status:state.auth.status,
+        nome:state.auth.nome,
+        email:state.auth.email,
+        senha:state.auth.senha
     };
 };
 
-const SignUpConnect = connect(mapStateToProps, {checkLogin})(SignUp);
+const SignUpConnect = connect(mapStateToProps, {checkLogin, registerNewUser, changeEmail, changeNome, changeSenha})(SignUp);
 export default SignUpConnect;
