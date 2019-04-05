@@ -3,9 +3,9 @@ import { View, ImageBackground, Text, TextInput, TouchableHighlight, StyleSheet 
 import { connect } from 'react-redux';
 import { checkLogin } from '../actions/AuthActions';
 
-export class Login extends Component {
+export class SignUp extends Component {
     static navigationOptions = {
-        title:'Login',
+        title:'SignUp',
         header: null
     }
 
@@ -13,27 +13,28 @@ export class Login extends Component {
         super(props);
         this.state = {};
 
-        this.signUpAction = this.signUpAction.bind(this);
+        this.signInAction = this.signInAction.bind(this);
     }
 
-    signUpAction(){
-        this.props.navigation.navigate('SignUp');
+    signInAction(){
+        this.props.navigation.goBack();
     }
 
     render() {
         return(
             <ImageBackground source={require('../assets/bg.jpg')} style={styles.container}>
-                <Text style={styles.logo}>Devstagram</Text>
+                <Text style={styles.logo}>Cadastro</Text>
 
+                <TextInput style={styles.input} placeholder="Digite seu nome" placeholderTextColor="#FFFFFF" />
                 <TextInput style={styles.input} placeholder="Digite seu e-mail" placeholderTextColor="#FFFFFF" />
                 <TextInput style={styles.input} placeholder="Digite sua senha" placeholderTextColor="#FFFFFF" secureTextEntry={true} />
 
                 <TouchableHighlight style={styles.actionButton} onPress={ ()=>{} } underlayColor="#307EAF">
-                    <Text style={styles.actionButtonText}>Login</Text>
+                    <Text style={styles.actionButtonText}>Cadastrar</Text>
                 </TouchableHighlight>
 
-                <TouchableHighlight style={styles.signButton} onPress={this.signUpAction} underlayColor="transparent">
-                    <Text style={styles.signButtonText}>Ainda não tem cadastro, clica aqui</Text>
+                <TouchableHighlight style={styles.signButton} onPress={this.signInAction} underlayColor="transparent">
+                    <Text style={styles.signButtonText}>Deseja fazer login, clica aqui</Text>
                 </TouchableHighlight>
             </ImageBackground>
         );
@@ -96,5 +97,5 @@ const mapStateToProps = (state) => {
     };
 };
 
-const LoginConnect = connect(mapStateToProps, {checkLogin})(Login);
-export default LoginConnect;
+const SignUpConnect = connect(mapStateToProps, {checkLogin})(SignUp);
+export default SignUpConnect;
