@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, ImageBackground, Text, TextInput, TouchableHighlight, StyleSheet } from 'react-native';
+import { NavigationActions, StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { checkLogin, registerNewUser, changeEmail, changeNome, changeSenha } from '../actions/AuthActions';
 
@@ -15,6 +16,7 @@ export class SignUp extends Component {
 
         this.signInAction = this.signInAction.bind(this);
         this.registerAction = this.registerAction.bind(this);
+        //this.verifyStatus = this.verifyStatus.bind(this);
     }
 
     signInAction(){
@@ -28,6 +30,21 @@ export class SignUp extends Component {
             this.props.senha
         );
     }
+
+    // componentDidUpdate() {
+    //     this.verifyStatus();
+    // }
+
+    // verifyStatus() {
+    //     if (this.props.status === 2) {
+    //         this.props.navigation.dispatch(StackActions.reset({
+    //             index:0,
+    //             actions:[
+    //                 NavigationActions.navigate({routeName: 'Login'})
+    //             ]
+    //         }));
+    //     }
+    // }
 
     render() {
         return(

@@ -7,7 +7,7 @@ import ReduxThunk from 'redux-thunk';
 
 import Reducers from './src/Reducers';
 import Preload from './src/screens/Preload';
-import Home from './src/screens/Home';
+import Tabs from './src/screens/Tabs';
 import Login from './src/screens/Login';
 import SignUp from './src/screens/SignUp';
 
@@ -19,14 +19,18 @@ const AppNavigator = createStackNavigator({
   preload: {
     screen:Preload
   },
-  Home: {
-    screen:Home
+  Tabs: {
+    screen:Tabs
   },
   Login: {
     screen: Login
   },
   SignUp: {
     screen: SignUp
+  }
+},{
+  defaultNavigationOptions:{
+    header: null
   }
 });
 
