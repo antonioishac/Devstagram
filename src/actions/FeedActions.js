@@ -3,7 +3,15 @@ import { checkLogout } from './AuthActions';
 
 export const getFeed = () => {
     
+    
     return (dispatch) => {
+
+        dispatch({
+			type:'changeFeedLoadingStatus',
+			payload:{
+				status:true
+			}
+        });        
 
         AsyncStorage.getItem('access_token')
         .then((data)=>{
@@ -23,6 +31,13 @@ export const getFeed = () => {
                 .then((json) => {                        
                     if (json.error == '' || json.error == undefined) {                
                         
+                        dispatch({
+                            type:'changeFeedLoadingStatus',
+                            payload:{
+                                status:false
+                            }
+                        });
+
                         dispatch({
                             type:'incrementFeed',
                             payload:{
@@ -48,6 +63,6 @@ export const getFeed = () => {
         .catch(()=>{
             dispatch(checkLogout());
         })            
-    }
+    }    
 }
 

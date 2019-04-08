@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { checkLogin, checkLogout } from '../actions/AuthActions';
 import { getFeed } from '../actions/FeedActions';
+import FeedItemFake from '../components/feed/FeedItemFake';
 
 export class Feed extends Component {
 
@@ -33,11 +34,11 @@ export class Feed extends Component {
 
     componentDidUpdate() {
         this.verifyStatus();
-    }
+    } 
 
     componentDidMount() {
         this.props.getFeed();
-    }
+      }
 
     logoutAction() {
         this.props.checkLogout();
@@ -53,6 +54,14 @@ export class Feed extends Component {
     render() {
         return(
             <View style={styles.container}>
+
+                {this.props.feedLoading == true &&
+					<View>
+						<FeedItemFake />
+						<FeedItemFake />
+					</View>
+				}
+
                 <Text>Feed de fotos</Text>
 
                 {/* <Button title="Sair" onPress={this.logoutAction}></Button> */}
@@ -71,16 +80,15 @@ export class Feed extends Component {
 
 const styles = StyleSheet.create({
     container:{
-        flex:1,
-        justifyContent:'center',
-        alignItems:'center'
+        flex:1
     }
 });
 
 const mapStateToProps = (state) => {
     return {
         status:state.auth.status,
-        feed:state.feed.feed
+        feed:state.feed.feed,
+        feedLoading:state.feed.feedLoading
     };
 };
 
