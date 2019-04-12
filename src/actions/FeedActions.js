@@ -27,8 +27,9 @@ export const getFeed = () => {
                     },
                     body: null
                 })
-                .then((r) => r.json())
-                .then((json) => {                        
+                .then((r) => r.json()) 
+                .then((json) => {
+
                     if (json.error == '' || json.error == undefined) {                
                         
                         dispatch({
@@ -44,7 +45,8 @@ export const getFeed = () => {
                                 feed:json
                             }
                         });
-            
+                        
+
                     } else {
                         alert('Token inválido: ' + json.error);
 
@@ -66,3 +68,26 @@ export const getFeed = () => {
     }    
 }
 
+export const likePhoto = (id, is_liked) => {
+    return (dispatch) => {
+        
+        if (id != null) {
+
+            let method = '';
+            if (is_liked == 'S') {
+                method = 'DELETE';
+            } else {
+                method = 'POST';
+            }
+
+            alert('Requisição: ' + method + " ao código: " + id);
+
+            /*
+            ENDPOINT: /feed/photo/like/{codigo}
+            METODOS: POST (dar like), DELETE (tirar like)
+            ENVIAR o JWT
+            */
+        }
+
+    }
+}

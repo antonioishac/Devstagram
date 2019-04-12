@@ -4,19 +4,23 @@ import { connect } from 'react-redux';
 import { checkLogin } from '../actions/AuthActions';
 
 export class Profile extends Component {
-    static navigationOptions = {
-        title:'Profile'
+    static navigationOptions = ({navigation}) => {
+        return {
+            title:navigation.getParam('nome')
+        };
     }
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            codigo: this.props.navigation.getParam('codigo')
+        };
     }
     
     render() {
         return(
             <View style={styles.container}>
-                <Text>Profile</Text>
+                <Text>Perfil ID: {this.state.codigo}</Text>
             </View>
         );
     }
