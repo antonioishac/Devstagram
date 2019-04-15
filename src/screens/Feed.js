@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Button, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { checkLogin, checkLogout } from '../actions/AuthActions';
-import { getFeed, likePhoto } from '../actions/FeedActions';
+import { getFeed, likePhoto, changeComment } from '../actions/FeedActions';
 import FeedItemFake from '../components/feed/FeedItemFake';
 import FeedItem from '../components/feed/FeedItem';
 
@@ -16,52 +16,52 @@ export class Feed extends Component {
     
     constructor(props) {
         super(props);
-        this.state = {
-            feedFake:[
-                {
-                    "codigo": 1,
-                    "name": "Antonio",
-                    "codigUsuario": 1,
-                    "likeCount": 0,
-                    "url": "https://fusionhealthcare.com.br/avatarApp/trabalhando-na-praia.jpg",
-                    "dateComment": "2019-04-09",
-                    "avatar": "https://fusionhealthcare.com.br/avatarApp/avatar.png",                    
-                    "comments": [
-                        {
-                            "codigo": 1,
-                            "codigoFeed": 1,
-                            "codigoUsuario": 1,
-                            "codigoPhoto": 1,
-                            "dataComment": "2019-04-08",
-                            "txt": "Estudando React Native",
-                            "nome": "Antonio Ishac"
-                        }
-                    ],
-                    "is_like": 'N',
-                },
-                {
-                    "codigo": 2,
-                    "name": "Jesus",
-                    "codigUsuario": 2,
-                    "likeCount": 1,
-                    "url": "https://fusionhealthcare.com.br/avatarApp/natal.jpg",
-                    "dateComment": "2019-04-09",
-                    "avatar": "https://fusionhealthcare.com.br/avatarApp/avatar.png",                    
-                    "comments": [
-                        {
-                            "codigo": 3,
-                            "codigoFeed": 2,
-                            "codigoUsuario": 2,
-                            "codigoPhoto": 2,
-                            "dataComment": "2019-04-08",
-                            "txt": "Nosso natal FELIZ !!!",
-                            "nome": "Testador"
-                        }
-                    ],
-                    "is_like": 'S',
-                }
-            ]
-        };
+        // this.state = {
+        //     feedFake:[
+        //         {
+        //             "codigo": 1,
+        //             "name": "Antonio",
+        //             "codigUsuario": 1,
+        //             "likeCount": 0,
+        //             "url": "https://fusionhealthcare.com.br/avatarApp/trabalhando-na-praia.jpg",
+        //             "dateComment": "2019-04-09",
+        //             "avatar": "https://fusionhealthcare.com.br/avatarApp/avatar.png",                    
+        //             "comments": [
+        //                 {
+        //                     "codigo": 1,
+        //                     "codigoFeed": 1,
+        //                     "codigoUsuario": 1,
+        //                     "codigoPhoto": 1,
+        //                     "dataComment": "2019-04-08",
+        //                     "txt": "Estudando React Native",
+        //                     "nome": "Antonio Ishac"
+        //                 }
+        //             ],
+        //             "is_like": 'N',
+        //         },
+        //         {
+        //             "codigo": 2,
+        //             "name": "Jesus",
+        //             "codigUsuario": 2,
+        //             "likeCount": 1,
+        //             "url": "https://fusionhealthcare.com.br/avatarApp/natal.jpg",
+        //             "dateComment": "2019-04-09",
+        //             "avatar": "https://fusionhealthcare.com.br/avatarApp/avatar.png",                    
+        //             "comments": [
+        //                 {
+        //                     "codigo": 3,
+        //                     "codigoFeed": 2,
+        //                     "codigoUsuario": 2,
+        //                     "codigoPhoto": 2,
+        //                     "dataComment": "2019-04-08",
+        //                     "txt": "Nosso natal FELIZ !!!",
+        //                     "nome": "Testador"
+        //                 }
+        //             ],
+        //             "is_like": 'S',
+        //         }
+        //     ]
+        // };
 
         //this.logoutAction = this.logoutAction.bind(this);
         this.verifyStatus = this.verifyStatus.bind(this);
@@ -103,18 +103,6 @@ export class Feed extends Component {
         this.props.likePhoto(id, is_liked)
     }
 
-    /*
-    {(this.props.feedLoading == false && this.props.feed.length == 0) &&
-                    <View style={styles.feedZero}>
-                        <Text>Não há itens a serem mostrados</Text>
-                    </View>
-                }
-
-    {(this.props.feedLoading == false && this.props.feed.length > 0) &&
-                    
-                }
-    */
-
     render() {
         return(
             <View style={styles.container}>
@@ -126,12 +114,20 @@ export class Feed extends Component {
 					</View>
                 }
 
-                <FlatList
-                    data={this.state.feedFake}
-                    renderItem={({item})=><FeedItem data={item} likeAction={this.likeAction} nav={this.props.navigation} />}
-                    keyExtractor={(item)=>item.codigo}
-                    style={styles.feed}
-                />
+                {(this.props.feedLoading == false && this.props.feed.length == 0) &&
+                    <View style={styles.feedZero}>
+                        <Text>Não há itens a serem mostrados</Text>
+                    </View>
+                }
+
+                {(this.props.feedLoading == false && this.props.feed.length > 0) &&
+                    <FlatList
+                        data={this.props.feed}
+                        renderItem={({item})=><FeedItem data={item} likeAction={this.likeAction} nav={this.props.navigation} />}
+                        keyExtractor={(item)=>item.codigo}
+                        style={styles.feed}
+                    />
+                }
 
                 {/* <Text>Feed de fotos</Text> */}
 
@@ -169,5 +165,5 @@ const mapStateToProps = (state) => {
     };
 };
 
-const FeedConnect = connect(mapStateToProps, {checkLogin, checkLogout, getFeed, likePhoto})(Feed);
+const FeedConnect = connect(mapStateToProps, {checkLogin, checkLogout, getFeed, likePhoto, changeComment})(Feed);
 export default FeedConnect;

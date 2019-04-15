@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Image, Dimensions, TouchableHighlight } from 'react-native';
+import { View, StyleSheet, Text, Image, Dimensions, TouchableHighlight, Button, TextInput } from 'react-native';
 
 export default class FeedItem extends Component {
 
@@ -8,26 +8,21 @@ export default class FeedItem extends Component {
 
         let rawDate = this.props.data.dateComment;
         let date = rawDate.split('-');        
-        date = date[2] + '/' + date[1] + '/' + date[0];
-
-        let likeImage;
-        if (this.props.data.is_like == 'S') {
-            likeImage = require('../../assets/like_on.png');
-        } else {
-            likeImage = require('../../assets/like_off.png');
-        }
+        date = date[2] + '/' + date[1] + '/' + date[0];        
 
         this.state = {
             dateFormatted: date,
             screenWith:Dimensions.get('window').width,
             photoClickCount:0,
-            likeImage:likeImage
+            feedComments: false,
+            comment: ''
         }
 
         this.userClick = this.userClick.bind(this);
         this.photoClick = this.photoClick.bind(this);
         this.directLikeClick = this.directLikeClick.bind(this);
         this.toggleCommentArea = this.toggleCommentArea.bind(this);
+        this.enableToggleCommentArea = this.enableToggleCommentArea.bind(this);
     }
 
     userClick() {
@@ -67,10 +62,33 @@ export default class FeedItem extends Component {
     }
 
     toggleCommentArea() {
-        alert('Clicou no comentário');
+        let state = this.state;
+        state.feedComments = true;
+        this.setState(state);
+        //alert(this.state.feedComments);
     }
 
+    enableToggleCommentArea() {
+        let state = this.state;
+        state.feedComments = false;
+        this.setState(state);
+
+        alert('mensagem: ' + this.state.comment);
+    }
+
+    
+
     render() {
+
+        let likeImage;
+        if (this.props.data.is_like == 'S') {
+            likeImage = require('../../assets/like_on.png');
+        } else {
+            likeImage = require('../../assets/like_off.png');
+        }
+
+        
+
         return(
             <View style={styles.feedContainer}>
 				<View style={styles.feedHeader}>
@@ -104,19 +122,42 @@ export default class FeedItem extends Component {
                     
                     <TouchableHighlight underlayColor={null} onPress={this.directLikeClick}>
                         <View style={styles.likeArea}>
-                            <Image source={this.state.likeImage} style={styles.footerIcon} />
-                            <Text style={styles.likeText}>{this.props.data.likeCount}</Text>
+                            <Image source={likeImage} style={styles.footerIcon} />
+                            <Text style={styles.likeText}>{this.props.data.likeCount == null ? 0 : this.props.data.likeCount}</Text>
                         </View>
                     </TouchableHighlight>
                     
                     <TouchableHighlight underlayColor={null} onPress={this.toggleCommentArea}>
+
                         <View style={styles.CommentArea}>
                             <Image source={require('../../assets/comments.png')} style={styles.footerIcon} />
                             <Text style={styles.likeText}>{this.props.data.comments.length}</Text>
                         </View>
+
                     </TouchableHighlight>
 
+
                 </View>
+
+                {(this.state.feedComments) &&
+                    <View style={styles.textAreaContainer}>
+
+                        <TextInput
+                            onChangeText={(comment) => this.setState({comment})}
+                            multiline={true}
+                            placeholder="Insira seu comentário"
+                            numberOfLines={10}
+                            style={{ height:200, textAlignVertical: 'top',}}/>                        
+                    </View>                    
+                }
+
+                {(this.state.feedComments) &&
+                
+                    <View style={styles.botaoComentarios}>
+                        <Button title="Postar comentário" onPress={this.enableToggleCommentArea} />
+                    </View>
+                }
+
                 {this.props.data.comments.length > 0 &&
                     <View style={styles.commentContainer}>
                         {this.props.data.comments.map((citem)=>{
@@ -227,5 +268,20 @@ const styles = StyleSheet.create({
     feedEndLine:{
         height:2,
         backgroundColor: '#CCCCCC'
+    },
+    textAreaContainer: {
+        width: "95%",
+        marginLeft: 10,
+        fontSize:17,
+        paddingLeft: 10,
+        borderColor: '#CCCCCC',
+        borderWidth: 1
+    },
+    botaoComentarios:{
+        flexDirection:'row',
+        justifyContent:'flex-end',
+        marginRight:10,
+        marginTop:10,
+        marginBottom:10
     }
 });
