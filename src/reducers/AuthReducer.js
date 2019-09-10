@@ -1,30 +1,18 @@
 const initialState = {
-    nome:'',
-    email:'',
-    senha:'',
-    status:5
+	email:'',
+	password:'',
+	status:0
 };
 
-const AuthReducer = (state = initialState, action)=> {
+const AuthReducer = (state = initialState, action) => {
 
-    // Alteracao dos states
-    if (action.type == 'changeNome') {
-        return { ...state, nome:action.payload.nome };
-    }
+	if(action.type == 'changeStatus') {
+		alert("RETORNO: "+action.payload.status);
+		return { ...state, status:action.payload.status};
+	}
 
-    if (action.type == 'changeEmail') {
-        return { ...state, email:action.payload.email };
-    }
+	return state;
 
-    if (action.type == 'changeStatus') {
-        return { ...state, status:action.payload.status }
-    }
-
-    if (action.type =='changeSenha') {
-        return { ...state, senha:action.payload.senha }
-    }
-
-    return state;
-}
+};
 
 export default AuthReducer;

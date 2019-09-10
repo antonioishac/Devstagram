@@ -1,4 +1,4 @@
-package com.devstagram;
+package com.devsapp;
 
 import android.app.Application;
 

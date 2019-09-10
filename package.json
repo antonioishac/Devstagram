@@ -1,5 +1,5 @@
 {
-  "name": "Devstagram",
+  "name": "Devsapp",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -7,6 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "firebase": "^6.6.0",
     "react": "16.6.3",
     "react-native": "0.58.6",
     "react-native-gesture-handler": "^1.1.0",
